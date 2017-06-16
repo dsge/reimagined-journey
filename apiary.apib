@@ -5,13 +5,154 @@ HOST: http://polls.apiblueprint.org/
 
 Polls is a simple API allowing consumers to view polls and vote in them.
 
-## Order Collection [/order]
 
-### List All Order [GET]
+## User Collection [/user]
+
+### List All User [GET]
+
++ Response 404 (application/json)
++ Response 200 (application/json)
+
+    + Attributes(UserPager)
+    
+### Edit User [PUT]
+
++ Request (application/json)
+
+    + Body
+    
+            {
+                "first_name": "Béla" (string),
+                "last_name": "Kovács" (string),
+                "email": "elek.teszt@example.org" (string),
+                "old_password": "oldpassword" (optional, string),
+                "password": "newpasword" (optional, string)
+            }
+
++ Response 404 (application/json)
++ Response 200 (application/json)
+
+    + Attributes(UserPager)
+    
+## User Details [/user/{id}]
+
++ Parameters
+    + id (required, number, `1`) - User ID or me
+
+### Get user details [GET]
 
 + Response 200 (application/json)
 
-    + Attributes(OrderPager)
+    + Attributes(User)
+    
+## User Addresses [/user/{id}/address]
+
++ Parameters
+    + id (required, number, `1`) - User ID or me
+
+### Get user addresses [GET]
+
++ Response 200 (application/json)
+
+    + Attributes(AddressPager)
+    
+### Create address [POST]
+
++ Request (application/json)
+
+    + Body
+    
+            {
+                "title" : "Budapesti cimem" (string),
+                "country" : "Magyarország" (string),
+                "county" : "Pest megye" (string),
+                "city" : "Budapest" (string),
+                "street" : "Fő utca 12. 3. em 2. ajtó" (string),
+                "zip_code" : "2345" (string),
+                "customer_name" : "Kovács Dezső vagy Cégnév kft." (string),
+                "vat" : "HU12313133" (string),
+                "phone_number" : "+36 30 123 4567" (string),
+                "is_default_shipping" : false (boolean),
+                "is_default_billing" : false (boolean)
+            }
+
++ Response 404 (application/json)
++ Response 201 (application/json)
+
+    + Attributes(Address)
+    
+## GET, Delete, Edit User Address detail [/user/{user_id}/address/{id}]
+
++ Parameters
+    + user_id (required, number, `1`) - User ID or me
+    + id (required, number, `1`) - Address ID
+
+
+### Get user address details [GET]
+
++ Response 404 (application/json)
++ Response 200 (application/json)
+
+    + Attributes(Address)
+
+### Edit user address [PUT]
+
++ Request (application/json)
+
+    + Body
+    
+            {
+                "title" : "Budapesti cimem" (string),
+                "country" : "Magyarország" (string),
+                "county" : "Pest megye" (string),
+                "city" : "Budapest" (string),
+                "street" : "Fő utca 12. 3. em 2. ajtó" (string),
+                "zip_code" : "2345" (string),
+                "customer_name" : "Kovács Dezső vagy Cégnév kft." (string),
+                "vat" : "HU12313133" (string),
+                "phone_number" : "+36 30 123 4567" (string),
+                "is_default_shipping" : false (boolean),
+                "is_default_billing" : false (boolean)
+            }
+            
++ Response 404 (application/json)
++ Response 200 (application/json)
+
+    + Attributes(Address)
+
+### Delete user address [DELETE]
+
++ Response 204
+    
+## User Reviews [/user/{id}/review]
+
++ Parameters
+    + id (required, number, `1`) - User ID or me
+
+### Get all reviews of the user [GET]
+
++ Response 200 (application/json)
+
+    + Attributes(ReviewPager)
+    
+### Create review [POST]
+
++ Request (application/json)
+
+    + Body
+    
+            {
+                "product": {
+                    "id": 3232 (number)
+                },
+                "rating": 4 (number),
+                "comment": "This is a review comment" (string)
+            }
+
++ Response 404 (application/json)
++ Response 201 (application/json)
+
+    + Attributes(Review)
 
 ## User Order Collection / Cart Items [/user/{id}/order]
 
@@ -24,92 +165,58 @@ Polls is a simple API allowing consumers to view polls and vote in them.
 
     + Attributes(OrderPager)
 
+
+## Order Collection [/order]
+
+### List All Order [GET]
+
++ Response 200 (application/json)
+
+    + Attributes(OrderPager)
+
 ## Get Order details [/order/{id}]
+
++ Parameters
+    + id (required, number, `1`) - Order ID or current
 
 ### Get the order [GET]
 
 + Response 200 (application/json)
 
     + Attributes(Order)
+    
+## Get Order Item details [/order/{order_id}/item/{id}]
 
-## Questions Collection [/questions]
++ Parameters
+    + order_id (required, number, `1`) - Order ID or current
+    + id (required, number, `1`) - OrderItem ID
 
-### List All Questions [GET]
+### Get the order item [GET]
 
 + Response 200 (application/json)
 
-        [
-            {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 2048
-                    }, {
-                        "choice": "Python",
-                        "votes": 1024
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 512
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 256
-                    }
-                ]
-            }
-        ]
-
-### Create a New Question [POST]
-
-You may create your own question using this action. It takes a JSON
-object containing a question and a collection of answers in the
-form of choices.
+    + Attributes(OrderItem)
+    
+### Modify order item [PUT]
 
 + Request (application/json)
 
-        {
-            "question": "Favourite programming language?",
-            "choices": [
-                "Swift",
-                "Python",
-                "Objective-C",
-                "Ruby"
-            ]
-        }
-
-+ Response 201 (application/json)
-
-    + Headers
-
-            Location: /questions/2
-
     + Body
-
+    
             {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 0
-                    }, {
-                        "choice": "Python",
-                        "votes": 0
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 0
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 0
-                    }
-                ]
+                "quantity": 2 (number),
+                "title": "Air Max" (string)
+                "quantity": 2 (number)
             }
 
++ Response 404 (application/json)
++ Response 200 (application/json)
+
+    + Attributes(OrderItem)
 
 # Data Structures
 
-## OrderPager (object)
+## Pager
 
 + total: 4 (number)
 + per_page: 15 (number)
@@ -117,7 +224,25 @@ form of choices.
 + last_page: 1 (number)
 + from: 1 (number)
 + to: 2 (number)
-+ data: Order, Order, Order, Order (array[Order])
+
+## UserPager (object)
++ Include Pager
++ data: User, User (array[User])
+
+## OrderPager (object)
+
++ Include Pager
++ data: Order, Order (array[Order])
+
+## AddressPager (object)
+
++ Include Pager
++ data: Address, Address (array[Address])
+
+## ReviewPager (object)
+
++ Include Pager
++ data: Review, Review (array[Review])
 
 ## User (object)
 
@@ -125,6 +250,80 @@ form of choices.
 + first_name: `Teszt` (string)
 + last_name: `Elek` (string)
 + email: `elek.teszt@example.org` (string)
+
+## Review (object)
+
++ id: 1232 (number)
++ rating: 4 (number)
++ comment: `This is the best shoes ever` (string)
++ created_at: `2017-03-12T12:12:12` (string)
+
+## Address (object)
+
++ id: 1232 (number)
++ title: `Budapesti cimem` (string)
++ country: `Magyarország` (string)
++ county: `Pest megye` (string)
++ city: `Budapest` (string)
++ street: `Fő utca 12. 3. em 2. ajtó` (string)
++ zip_code: `2345` (string)
++ customer_name: `Kovács Dezső vagy Cégnév kft.` (string)
++ vat: `HU12313133` (string)
++ phone_number: `+36 30 123 4567` (string)
++ is_default_shipping: false (boolean)
++ is_default_billing: false (boolean)
+
+## ShippingAddress (object)
+
++ Include Address
+
+## BillingAddress (object)
+
++ Include Address
+
+## Price (object)
+
++ title: 10 (number)
++ value: `10 Ft` (string)
+
+## DiscountPrice (object)
+
++ net
+    + Include Price
++ full
+    + Include Price
+
+## NormalPrice (object)
+
++ net
+    + Include Price
++ full
+    + Include Price
+
+## TotalPrice (object)
+
++ net
+    + Include Price
++ full
+    + Include Price
+
+## TaxPrice (object)
+
++ net
+    + Include Price
++ full
+    + Include Price
+
+## PriceDetail
+
++ discount
+    + Include DiscountPrice
++ normal
+    + Include NormalPrice
++ total
+    + Include TotalPrice
++ tax
+    + Include TaxPrice
 
 ## ProductOption (object)
 
@@ -137,7 +336,9 @@ form of choices.
 
 + id: 111 (number)
 + title: `Air Max` (string)
-+ options: ProductOption (array[ProductOption]) 
++ options: ProductOption (array[ProductOption])
++ price
+    + Include PriceDetail
 
 ## OrderItem (object)
 
@@ -145,31 +346,23 @@ form of choices.
 + title: `Air Max` (string)
 + quantity: 2 (number)
 + units: OrderItemUnit, OrderItemUnit (array[OrderItemUnit])
++ price
+    + Include PriceDetail
 
 ## Order (object)
 
 + id: 11212 (number)
-+ user 
++ customer 
     + Include User
 + items: OrderItem, OrderItem, OrderItem (array[OrderItem])
 + status: `cart` (string)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-+ created_at: "2017-01-01 12:12:12" (datetime)
++ customer_note: `This is a comment` (optional, string)
++ is_abandoned: false (boolean)
++ is_guest_customer: false (boolean)
++ total_quantity: 10 (number)
++ price
+    + Include PriceDetail
++ shipping_address (optional)
+    + Include ShippingAddress
++ billing_address (optional)
+    + Include BillingAddress
