@@ -1,0 +1,152 @@
+# Data Structures
+
+## Pager
+
++ total: 4 (number)
++ per_page: 15 (number)
++ current_page: 1 (number)
++ last_page: 1 (number)
++ from: 1 (number)
++ to: 2 (number)
+
+## UserPager (object)
++ Include Pager
++ data: User, User (array[User])
+
+## OrderPager (object)
+
++ Include Pager
++ data: Order, Order (array[Order])
+
+## AddressPager (object)
+
++ Include Pager
++ data: Address, Address (array[Address])
+
+## ReviewPager (object)
+
++ Include Pager
++ data: Review, Review (array[Review])
+
+## User (object)
+
++ id: 11212 (number)
++ first_name: `Teszt` (string)
++ last_name: `Elek` (string)
++ email: `elek.teszt@example.org` (string)
+
+## Review (object)
+
++ id: 1232 (number)
++ rating: 4 (number)
++ comment: `This is the best shoes ever` (string)
++ created_at: `2017-03-12T12:12:12` (string)
+
+## Address (object)
+
++ id: 1232 (number)
++ title: `Budapesti cimem` (string)
++ country: `Magyarország` (string)
++ county: `Pest megye` (string)
++ city: `Budapest` (string)
++ street: `Fő utca 12. 3. em 2. ajtó` (string)
++ zip_code: `2345` (string)
++ customer_name: `Kovács Dezső vagy Cégnév kft.` (string)
++ vat: `HU12313133` (string)
++ phone_number: `+36 30 123 4567` (string)
++ is_default_shipping: false (boolean)
++ is_default_billing: false (boolean)
+
+## ShippingAddress (object)
+
++ Include Address
+
+## BillingAddress (object)
+
++ Include Address
+
+## Price (object)
+
++ title: 10 (number)
++ value: `10 Ft` (string)
+
+## DiscountPrice (object)
+
++ net
+    + Include Price
++ full
+    + Include Price
+
+## NormalPrice (object)
+
++ net
+    + Include Price
++ full
+    + Include Price
+
+## TotalPrice (object)
+
++ net
+    + Include Price
++ full
+    + Include Price
+
+## TaxPrice (object)
+
++ net
+    + Include Price
++ full
+    + Include Price
+
+## PriceDetail
+
++ discount
+    + Include DiscountPrice
++ normal
+    + Include NormalPrice
++ total
+    + Include TotalPrice
++ tax
+    + Include TaxPrice
+
+## ProductOption (object)
+
++ id: 111 (number)
++ slug: `size` (string)
++ title: `Size` (string)
++ value: `42` (string)
+
+## OrderItemUnit (object)
+
++ id: 111 (number)
++ title: `Air Max` (string)
++ options: ProductOption (array[ProductOption])
++ price
+    + Include PriceDetail
+
+## OrderItem (object)
+
++ id: 11212 (number)
++ title: `Air Max` (string)
++ quantity: 2 (number)
++ units: OrderItemUnit, OrderItemUnit (array[OrderItemUnit])
++ price
+    + Include PriceDetail
+
+## Order (object)
+
++ id: 11212 (number)
++ customer 
+    + Include User
++ items: OrderItem, OrderItem, OrderItem (array[OrderItem])
++ status: `cart` (string)
++ customer_note: `This is a comment` (optional, string)
++ is_abandoned: false (boolean)
++ is_guest_customer: false (boolean)
++ total_quantity: 10 (number)
++ price
+    + Include PriceDetail
++ shipping_address (optional)
+    + Include ShippingAddress
++ billing_address (optional)
+    + Include BillingAddress

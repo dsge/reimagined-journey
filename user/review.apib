@@ -1,0 +1,29 @@
+## User Reviews [/user/{id}/review]
+
++ Parameters
+    + id (required, number, `1`) - User ID or me
+
+### Get all reviews of the user [GET]
+
++ Response 200 (application/json)
+
+    + Attributes(ReviewPager)
+    
+### Create review [POST]
+
++ Request (application/json)
+
+    + Body
+    
+            {
+                "product": {
+                    "id": 3232 (number)
+                },
+                "rating": 4 (number),
+                "comment": "This is a review comment" (string)
+            }
+
++ Response 404 (application/json)
++ Response 201 (application/json)
+
+    + Attributes(Review)

@@ -1,10 +1,9 @@
 FORMAT: 1A
-HOST: http://polls.apiblueprint.org/
+HOST: http://wo-man.apiblueprint.org
 
 # Wo-man
 
 Polls is a simple API allowing consumers to view polls and vote in them.
-
 
 ## User Collection [/user]
 
@@ -44,7 +43,6 @@ Polls is a simple API allowing consumers to view polls and vote in them.
 + Response 200 (application/json)
 
     + Attributes(User)
-    
 ## User Addresses [/user/{id}/address]
 
 + Parameters
@@ -123,7 +121,6 @@ Polls is a simple API allowing consumers to view polls and vote in them.
 ### Delete user address [DELETE]
 
 + Response 204
-    
 ## User Reviews [/user/{id}/review]
 
 + Parameters
@@ -153,7 +150,6 @@ Polls is a simple API allowing consumers to view polls and vote in them.
 + Response 201 (application/json)
 
     + Attributes(Review)
-
 ## User Order Collection / Cart Items [/user/{id}/order]
 
 + Parameters
@@ -164,7 +160,6 @@ Polls is a simple API allowing consumers to view polls and vote in them.
 + Response 200 (application/json)
 
     + Attributes(OrderPager)
-
 
 ## Order Collection [/order]
 
@@ -184,7 +179,6 @@ Polls is a simple API allowing consumers to view polls and vote in them.
 + Response 200 (application/json)
 
     + Attributes(Order)
-    
 ## Get Order Item details [/order/{order_id}/item/{id}]
 
 + Parameters
@@ -213,7 +207,7 @@ Polls is a simple API allowing consumers to view polls and vote in them.
 + Response 200 (application/json)
 
     + Attributes(OrderItem)
-
+    
 # Data Structures
 
 ## Pager

@@ -1,0 +1,78 @@
+## User Addresses [/user/{id}/address]
+
++ Parameters
+    + id (required, number, `1`) - User ID or me
+
+### Get user addresses [GET]
+
++ Response 200 (application/json)
+
+    + Attributes(AddressPager)
+    
+### Create address [POST]
+
++ Request (application/json)
+
+    + Body
+    
+            {
+                "title" : "Budapesti cimem" (string),
+                "country" : "Magyarország" (string),
+                "county" : "Pest megye" (string),
+                "city" : "Budapest" (string),
+                "street" : "Fő utca 12. 3. em 2. ajtó" (string),
+                "zip_code" : "2345" (string),
+                "customer_name" : "Kovács Dezső vagy Cégnév kft." (string),
+                "vat" : "HU12313133" (string),
+                "phone_number" : "+36 30 123 4567" (string),
+                "is_default_shipping" : false (boolean),
+                "is_default_billing" : false (boolean)
+            }
+
++ Response 404 (application/json)
++ Response 201 (application/json)
+
+    + Attributes(Address)
+    
+## GET, Delete, Edit User Address detail [/user/{user_id}/address/{id}]
+
++ Parameters
+    + user_id (required, number, `1`) - User ID or me
+    + id (required, number, `1`) - Address ID
+
+
+### Get user address details [GET]
+
++ Response 404 (application/json)
++ Response 200 (application/json)
+
+    + Attributes(Address)
+
+### Edit user address [PUT]
+
++ Request (application/json)
+
+    + Body
+    
+            {
+                "title" : "Budapesti cimem" (string),
+                "country" : "Magyarország" (string),
+                "county" : "Pest megye" (string),
+                "city" : "Budapest" (string),
+                "street" : "Fő utca 12. 3. em 2. ajtó" (string),
+                "zip_code" : "2345" (string),
+                "customer_name" : "Kovács Dezső vagy Cégnév kft." (string),
+                "vat" : "HU12313133" (string),
+                "phone_number" : "+36 30 123 4567" (string),
+                "is_default_shipping" : false (boolean),
+                "is_default_billing" : false (boolean)
+            }
+            
++ Response 404 (application/json)
++ Response 200 (application/json)
+
+    + Attributes(Address)
+
+### Delete user address [DELETE]
+
++ Response 204

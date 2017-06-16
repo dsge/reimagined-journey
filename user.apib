@@ -1,0 +1,38 @@
+## User Collection [/user]
+
+### List All User [GET]
+
++ Response 404 (application/json)
++ Response 200 (application/json)
+
+    + Attributes(UserPager)
+    
+### Edit User [PUT]
+
++ Request (application/json)
+
+    + Body
+    
+            {
+                "first_name": "Béla" (string),
+                "last_name": "Kovács" (string),
+                "email": "elek.teszt@example.org" (string),
+                "old_password": "oldpassword" (optional, string),
+                "password": "newpasword" (optional, string)
+            }
+
++ Response 404 (application/json)
++ Response 200 (application/json)
+
+    + Attributes(UserPager)
+    
+## User Details [/user/{id}]
+
++ Parameters
+    + id (required, number, `1`) - User ID or me
+
+### Get user details [GET]
+
++ Response 200 (application/json)
+
+    + Attributes(User)
