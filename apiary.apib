@@ -5,6 +5,33 @@ HOST: http://polls.apiblueprint.org/
 
 Polls is a simple API allowing consumers to view polls and vote in them.
 
+## Order Collection [/order]
+
+### List All Order [GET]
+
++ Response 200 (application/json)
+
+    + Attributes(OrderPager)
+
+## User Order Collection / Cart Items [/user/{id}/order]
+
++ Parameters
+    + id (required, number, `1`) - User ID or me
+
+### List all orders of the user [GET]
+
++ Response 200 (application/json)
+
+    + Attributes(OrderPager)
+
+## Get Order details [/order/{id}]
+
+### Get the order [GET]
+
++ Response 200 (application/json)
+
+    + Attributes(Order)
+
 ## Questions Collection [/questions]
 
 ### List All Questions [GET]
@@ -78,3 +105,71 @@ form of choices.
                     }
                 ]
             }
+
+
+# Data Structures
+
+## OrderPager (object)
+
++ total: 4 (number)
++ per_page: 15 (number)
++ current_page: 1 (number)
++ last_page: 1 (number)
++ from: 1 (number)
++ to: 2 (number)
++ data: Order, Order, Order, Order (array[Order])
+
+## User (object)
+
++ id: 11212 (number)
++ first_name: `Teszt` (string)
++ last_name: `Elek` (string)
++ email: `elek.teszt@example.org` (string)
+
+## ProductOption (object)
+
++ id: 111 (number)
++ slug: `size` (string)
++ title: `Size` (string)
++ value: `42` (string)
+
+## OrderItemUnit (object)
+
++ id: 111 (number)
++ title: `Air Max` (string)
++ options: ProductOption (array[ProductOption]) 
+
+## OrderItem (object)
+
++ id: 11212 (number)
++ title: `Air Max` (string)
++ quantity: 2 (number)
++ units: OrderItemUnit, OrderItemUnit (array[OrderItemUnit])
+
+## Order (object)
+
++ id: 11212 (number)
++ user 
+    + Include User
++ items: OrderItem, OrderItem, OrderItem (array[OrderItem])
++ status: `cart` (string)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
++ created_at: "2017-01-01 12:12:12" (datetime)
