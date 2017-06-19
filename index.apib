@@ -3,14 +3,22 @@ HOST: http://wo-man.apiblueprint.org
 
 # Wo-man
 
-Polls is a simple API allowing consumers to view polls and vote in them.
+- Minden http request `Content-type: application/json`-t küld és fogad, kivéve, ha mást írunk lentebb
+- Minden API endpoint standard http headerekkel és http hibakódokkal dolgozik
+- Ha a kliensnek van auth tokene (azaz “be van jelentkezve”), akkor minden további http requesthez csatolnia kell egy `Authorization: Bearer <auth token>` headert
+
+<!-- include(auth.apib) -->
 
 <!-- include(user.apib) -->
 <!-- include(user/address.apib) -->
 <!-- include(user/review.apib) -->
 <!-- include(user/order.apib) -->
+<!-- include(user/order/item.apib) -->
 
 <!-- include(order.apib) -->
 <!-- include(order/item.apib) -->
+
+<!-- include(product.apib) -->
+<!-- include(product/review.apib) -->
     
 <!-- include(data-structures.apib) -->

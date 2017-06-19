@@ -1,0 +1,101 @@
+## Authentication [/auth]
+
+### Login [POST /auth/login]
+
+Bejelentkezni email cimmel es jelszoval vagy social auth segítségével.
+
+Ez az endpoint sikeres bejelentkezés esetén egy JWT tokent ( https://jwt.io ) ad vissza. A token a következőket tartalmazza:
+
+```
+{
+    "roles": [], //array of strings, másolat a belépett user entity `roles` mezőjéről
+    "sub": 2, //string/int user unique id
+    "iss": "http://wo-man.dev/v1/auth/login", //string token származási helye
+    "iat": 1464959200, //int unix timestamp, token létrehozásának időpontja
+    "exp": 1464962800, //int unix timestamp, token lejáratának időpontja
+    "nbf": 1464959200, //int unix timestamp, token érvényesség kezdetének időpontja
+    "jti": "45ac5cd03267ce11158177ec61c1bbc5" //string token unique id
+ }
+```
+
++ Request (application/json)
+
+    + Body
+    
+            {
+                "email": "example@gmail.com",
+                "password": "example1234"
+            }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "token": "auth token"
+            }
+
+### Reset password [POST /auth/password/reset]
+
++ Request (application/json)
+
+    + Body
+    
+            {
+                "email": "example@gmail.com"
+            }
+
++ Response 200 (application/json)
+
+### Confirm code [POST /auth/password/confirm]
+
++ Request (application/json)
+
+    + Body
+    
+            {
+                "token": "1234",
+                "password": "new password",
+                "email": "example@gmail.com"
+            }
+
++ Response 200 (application/json)
+
+## Social Authentication [/auth/{provider}]
+
++ Parameters
+    + provider (required, string, `facebook`) - facebook or google
+
+### Connect [POST]
+
+Amennyiben nem letezik a facebook-os felhasznalo, letrehoz az API egy ujat.
+
++ Request (application/json)
+        
+    + Body
+    
+            {
+                "token": "facebook auth token" (string),
+                "redirect_uri": "" (string)
+            }
+            
++ Response 200 (application/json)
+
+    + Body
+        
+            {
+                "token": "auth token",
+            }
+            
++ Response 201 (application/json)
+
+    + Body
+        
+            {
+                "token": "auth token",
+            }
+            
+            
+### Disconnect [DELETE]
+
++ Response 200 (application/json)

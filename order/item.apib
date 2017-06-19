@@ -1,16 +1,28 @@
-## Get Order Item details [/order/{order_id}/item/{id}]
+## ORDER ITEM [/order/{id}/item]
+
++ Parameters
+    + id (required, number, `1`) - Order ID or current
+
+### List [GET]
+
++ Response 404 (application/json)
++ Response 200 (application/json)
+
+    + Attributes(OrderItemPager)
+
+## ORDER ITEM Details [/order/{order_id}/item/{id}]
 
 + Parameters
     + order_id (required, number, `1`) - Order ID or current
     + id (required, number, `1`) - OrderItem ID
 
-### Get the order item [GET]
+### Show [GET]
 
 + Response 200 (application/json)
 
     + Attributes(OrderItem)
-    
-### Modify order item [PUT]
+
+### Edit [PUT]
 
 + Request (application/json)
 
@@ -19,10 +31,14 @@
             {
                 "quantity": 2 (number),
                 "title": "Air Max" (string)
-                "quantity": 2 (number)
             }
 
 + Response 404 (application/json)
 + Response 200 (application/json)
 
     + Attributes(OrderItem)
+
+### Delete [DELETE]
+
++ Response 404 (application/json)
++ Response 200 (application/json)

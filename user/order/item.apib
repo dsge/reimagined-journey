@@ -1,0 +1,68 @@
+## USER ORDER ITEM [/user/{user_id}/order/{order_id}/item]
+
++ Parameters
+    + user_id (required, number, `1`) - User ID or me
+    + order_id (required, number, `1`) - Order ID or current
+
+### List [GET]
+
++ Response 404 (application/json)
++ Response 200 (application/json)
+
+    + Attributes(OrderItemPager)
+
+### Create / Add To Cart [POST]
+
++ Request (application/json)
+
+    + Body
+    
+            {
+                "product": {
+                    "id": 3232 (number)
+                },
+                "quantity": 1 (optional, string),
+                "product_option": {
+                    "id" : 1,
+                    "slug" : "size"
+                    "value" : "42"
+                }
+            }
+
++ Response 404 (application/json)
++ Response 201 (application/json)
+
+    + Attributes(OrderItem)
+
+## USER ORDER ITEM Details [/user/{user_id}/order/{order_id}/item/{id}]
+
++ Parameters
+    + user_id (required, number, `1`) - User ID or me
+    + order_id (required, number, `1`) - Order ID or current
+    + id (required, number, `1`) - OrderItem ID
+
+### Show [GET]
+
++ Response 200 (application/json)
+
+    + Attributes(OrderItem)
+    
+### Edit [PUT]
+
++ Request (application/json)
+
+    + Body
+    
+            {
+                "quantity": 2 (number)
+            }
+
++ Response 404 (application/json)
++ Response 200 (application/json)
+
+    + Attributes(OrderItem)
+    
+### Delete [DELETE]
+
++ Response 404 (application/json)
++ Response 200 (application/json)

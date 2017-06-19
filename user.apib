@@ -1,13 +1,46 @@
-## User Collection [/user]
+## USER  [/user]
 
-### List All User [GET]
+### List [GET]
 
 + Response 404 (application/json)
 + Response 200 (application/json)
 
     + Attributes(UserPager)
     
-### Edit User [PUT]
+### Create [POST]
+
++ Request (application/json)
+
+    + Body
+    
+            {
+                "first_name": "Béla" (required, string),
+                "last_name": "Kovács" (required, string),
+                "email": "elek.teszt@example.org" (required, string),
+                "password": "newpasword" (required, string),
+                "newsletter": 1 (required, number)
+            }
+
++ Response 201
+
+    + Body
+
+            {
+                "token": "auth token"
+            }
+    
+## USER Details [/user/{id}]
+
++ Parameters
+    + id (required, number, `1`) - User ID or me
+
+### Show [GET]
+
++ Response 200 (application/json)
+
+    + Attributes(User)
+    
+### Edit [PUT]
 
 + Request (application/json)
 
@@ -21,18 +54,6 @@
                 "password": "newpasword" (optional, string)
             }
 
-+ Response 404 (application/json)
 + Response 200 (application/json)
 
     + Attributes(UserPager)
-    
-## User Details [/user/{id}]
-
-+ Parameters
-    + id (required, number, `1`) - User ID or me
-
-### Get user details [GET]
-
-+ Response 200 (application/json)
-
-    + Attributes(User)

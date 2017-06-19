@@ -18,6 +18,11 @@
 + Include Pager
 + data: Order, Order (array[Order])
 
+## OrderItemPager (object)
+
++ Include Pager
++ data: OrderItem, OrderItem (array[OrderItem])
+
 ## AddressPager (object)
 
 + Include Pager
@@ -27,6 +32,11 @@
 
 + Include Pager
 + data: Review, Review (array[Review])
+
+## ProductPager (object)
+
++ Include Pager
++ data: Product, Product (array[Product])
 
 ## User (object)
 
@@ -64,6 +74,20 @@
 ## BillingAddress (object)
 
 + Include Address
+
+## ShippingMethod (object)
++ slug: `gls`
++ title: `GLS futárszolgálat`
++ description: `Gyors, pontos, megbízható`
++ price
+    + Include PriceDetail
+    
+## PaymentMethod (object)
++ slug: `card`
++ title: `Bankkártyás fizetés`
++ description: `Mastercard, Visa, Maestro`
++ price
+    + Include PriceDetail
 
 ## Price (object)
 
@@ -109,6 +133,32 @@
 + tax
     + Include TaxPrice
 
+## ProductAttribute (object)
+
++ id: 111 (number)
++ slug: `color` (string)
++ title: `Szín` (string)
++ position: 1 (number)
++ value: `Fekete` (string) 
+
+## ProductAttributeSet (object)
+
++ id: 111 (number)
++ slug: `cipo` (string)
++ title: `Cipő` (string)
++ attributes: ProductAttribute, ProductAttribute (array[ProductAttribute])
+
+## Product (object)
+
++ id: 111 (number)
++ sku: `4234hgh` (string)
++ title: `Air Max` (string)
++ description: `Air Max description` (string)
++ attributeSet: ProductAttribute, ProductAttribute (array[ProductAttribute])
++ options: ProductOption (array[ProductOption])
++ price
+    + Include PriceDetail
+
 ## ProductOption (object)
 
 + id: 111 (number)
@@ -146,6 +196,10 @@
 + total_quantity: 10 (number)
 + price
     + Include PriceDetail
++ shipping_method (optional)
+    + Include ShippingMethod
++ payment_method (optional)
+    + Include PaymentMethod
 + shipping_address (optional)
     + Include ShippingAddress
 + billing_address (optional)

@@ -1,15 +1,15 @@
-## User Addresses [/user/{id}/address]
+## USER ADDRESS [/user/{id}/address]
 
 + Parameters
     + id (required, number, `1`) - User ID or me
 
-### Get user addresses [GET]
+### List [GET]
 
 + Response 200 (application/json)
 
     + Attributes(AddressPager)
     
-### Create address [POST]
+### Create [POST]
 
 + Request (application/json)
 
@@ -34,21 +34,21 @@
 
     + Attributes(Address)
     
-## GET, Delete, Edit User Address detail [/user/{user_id}/address/{id}]
+## USER ADDRESS Details [/user/{user_id}/address/{id}]
 
 + Parameters
     + user_id (required, number, `1`) - User ID or me
     + id (required, number, `1`) - Address ID
 
 
-### Get user address details [GET]
+### Show [GET]
 
 + Response 404 (application/json)
 + Response 200 (application/json)
 
     + Attributes(Address)
 
-### Edit user address [PUT]
+### Edit [PUT]
 
 + Request (application/json)
 
@@ -73,6 +73,6 @@
 
     + Attributes(Address)
 
-### Delete user address [DELETE]
+### Delete [DELETE]
 
 + Response 204
