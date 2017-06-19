@@ -3,18 +3,155 @@ HOST: http://wo-man.apiblueprint.org
 
 # Wo-man
 
-Polls is a simple API allowing consumers to view polls and vote in them.
+- Minden http request `Content-type: application/json`-t küld és fogad, kivéve, ha mást írunk lentebb
+- Minden API endpoint standard http headerekkel és http hibakódokkal dolgozik
+- Ha a kliensnek van auth tokene (azaz “be van jelentkezve”), akkor minden további http requesthez csatolnia kell egy `Authorization: Bearer <auth token>` headert
 
-## User Collection [/user]
+## Authentication [/auth]
 
-### List All User [GET]
+### Login [POST /auth/login]
+
+Bejelentkezni email cimmel es jelszoval vagy social auth segítségével.
+
+Ez az endpoint sikeres bejelentkezés esetén egy JWT tokent ( https://jwt.io ) ad vissza. A token a következőket tartalmazza:
+
+```
+{
+    "roles": [], //array of strings, másolat a belépett user entity `roles` mezőjéről
+    "sub": 2, //string/int user unique id
+    "iss": "http://wo-man.dev/v1/auth/login", //string token származási helye
+    "iat": 1464959200, //int unix timestamp, token létrehozásának időpontja
+    "exp": 1464962800, //int unix timestamp, token lejáratának időpontja
+    "nbf": 1464959200, //int unix timestamp, token érvényesség kezdetének időpontja
+    "jti": "45ac5cd03267ce11158177ec61c1bbc5" //string token unique id
+ }
+```
+
++ Request (application/json)
+
+    + Body
+    
+            {
+                "email": "example@gmail.com",
+                "password": "example1234"
+            }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "token": "auth token"
+            }
+
+### Reset password [POST /auth/password/reset]
+
++ Request (application/json)
+
+    + Body
+    
+            {
+                "email": "example@gmail.com"
+            }
+
++ Response 200 (application/json)
+
+### Confirm code [POST /auth/password/confirm]
+
++ Request (application/json)
+
+    + Body
+    
+            {
+                "token": "1234",
+                "password": "new password",
+                "email": "example@gmail.com"
+            }
+
++ Response 200 (application/json)
+
+## Social Authentication [/auth/{provider}]
+
++ Parameters
+    + provider (required, string, `facebook`) - facebook or google
+
+### Connect [POST]
+
+Amennyiben nem letezik a facebook-os felhasznalo, letrehoz az API egy ujat.
+
++ Request (application/json)
+        
+    + Body
+    
+            {
+                "token": "facebook auth token" (string),
+                "redirect_uri": "" (string)
+            }
+            
++ Response 200 (application/json)
+
+    + Body
+        
+            {
+                "token": "auth token",
+            }
+            
++ Response 201 (application/json)
+
+    + Body
+        
+            {
+                "token": "auth token",
+            }
+            
+            
+### Disconnect [DELETE]
+
++ Response 200 (application/json)
+
+## USER  [/user]
+
+### List [GET]
 
 + Response 404 (application/json)
 + Response 200 (application/json)
 
     + Attributes(UserPager)
     
-### Edit User [PUT]
+### Create [POST]
+
++ Request (application/json)
+
+    + Body
+    
+            {
+                "first_name": "Béla" (required, string),
+                "last_name": "Kovács" (required, string),
+                "email": "elek.teszt@example.org" (required, string),
+                "password": "newpasword" (required, string),
+                "newsletter": 1 (required, number)
+            }
+
++ Response 201
+
+    + Body
+
+            {
+                "token": "auth token"
+            }
+    
+## USER Details [/user/{id}]
+
++ Parameters
+    + id (required, number, `1`) - User ID or me
+
+### Show [GET]
+
++ Response 200 (application/json)
+
+    + Attributes(User)
+    
+### Edit [PUT]
 
 + Request (application/json)
 
@@ -28,33 +165,21 @@ Polls is a simple API allowing consumers to view polls and vote in them.
                 "password": "newpasword" (optional, string)
             }
 
-+ Response 404 (application/json)
 + Response 200 (application/json)
 
     + Attributes(UserPager)
-    
-## User Details [/user/{id}]
+## USER ADDRESS [/user/{id}/address]
 
 + Parameters
     + id (required, number, `1`) - User ID or me
 
-### Get user details [GET]
-
-+ Response 200 (application/json)
-
-    + Attributes(User)
-## User Addresses [/user/{id}/address]
-
-+ Parameters
-    + id (required, number, `1`) - User ID or me
-
-### Get user addresses [GET]
+### List [GET]
 
 + Response 200 (application/json)
 
     + Attributes(AddressPager)
     
-### Create address [POST]
+### Create [POST]
 
 + Request (application/json)
 
@@ -79,21 +204,21 @@ Polls is a simple API allowing consumers to view polls and vote in them.
 
     + Attributes(Address)
     
-## GET, Delete, Edit User Address detail [/user/{user_id}/address/{id}]
+## USER ADDRESS Details [/user/{user_id}/address/{id}]
 
 + Parameters
     + user_id (required, number, `1`) - User ID or me
     + id (required, number, `1`) - Address ID
 
 
-### Get user address details [GET]
+### Show [GET]
 
 + Response 404 (application/json)
 + Response 200 (application/json)
 
     + Attributes(Address)
 
-### Edit user address [PUT]
+### Edit [PUT]
 
 + Request (application/json)
 
@@ -118,21 +243,21 @@ Polls is a simple API allowing consumers to view polls and vote in them.
 
     + Attributes(Address)
 
-### Delete user address [DELETE]
+### Delete [DELETE]
 
 + Response 204
-## User Reviews [/user/{id}/review]
+## USER REVIEW [/user/{id}/review]
 
 + Parameters
     + id (required, number, `1`) - User ID or me
 
-### Get all reviews of the user [GET]
+### List [GET]
 
 + Response 200 (application/json)
 
     + Attributes(ReviewPager)
     
-### Create review [POST]
+### Create [POST]
 
 + Request (application/json)
 
@@ -150,48 +275,132 @@ Polls is a simple API allowing consumers to view polls and vote in them.
 + Response 201 (application/json)
 
     + Attributes(Review)
-## User Order Collection / Cart Items [/user/{id}/order]
+
+## USER ORDER [/user/{id}/order]
 
 + Parameters
     + id (required, number, `1`) - User ID or me
 
-### List all orders of the user [GET]
+### List [GET]
 
 + Response 200 (application/json)
 
     + Attributes(OrderPager)
 
-## Order Collection [/order]
-
-### List All Order [GET]
-
-+ Response 200 (application/json)
-
-    + Attributes(OrderPager)
-
-## Get Order details [/order/{id}]
+## USER ORDER ITEM [/user/{user_id}/order/{order_id}/item]
 
 + Parameters
-    + id (required, number, `1`) - Order ID or current
+    + user_id (required, number, `1`) - User ID or me
+    + order_id (required, number, `1`) - Order ID or current
 
-### Get the order [GET]
+### List [GET]
 
++ Response 404 (application/json)
 + Response 200 (application/json)
 
-    + Attributes(Order)
-## Get Order Item details [/order/{order_id}/item/{id}]
+    + Attributes(OrderItemPager)
+
+### Create / Add To Cart [POST]
+
++ Request (application/json)
+
+    + Body
+    
+            {
+                "product": {
+                    "id": 3232 (number)
+                },
+                "quantity": 1 (optional, string),
+                "product_option": {
+                    "id" : 1,
+                    "slug" : "size"
+                    "value" : "42"
+                }
+            }
+
++ Response 404 (application/json)
++ Response 201 (application/json)
+
+    + Attributes(OrderItem)
+
+## USER ORDER ITEM Details [/user/{user_id}/order/{order_id}/item/{id}]
 
 + Parameters
+    + user_id (required, number, `1`) - User ID or me
     + order_id (required, number, `1`) - Order ID or current
     + id (required, number, `1`) - OrderItem ID
 
-### Get the order item [GET]
+### Show [GET]
 
 + Response 200 (application/json)
 
     + Attributes(OrderItem)
     
-### Modify order item [PUT]
+### Edit [PUT]
+
++ Request (application/json)
+
+    + Body
+    
+            {
+                "quantity": 2 (number)
+            }
+
++ Response 404 (application/json)
++ Response 200 (application/json)
+
+    + Attributes(OrderItem)
+    
+### Delete [DELETE]
+
++ Response 404 (application/json)
++ Response 200 (application/json)
+
+
+## ORDER [/order]
+
+### List [GET]
+
++ Response 200 (application/json)
+
+    + Attributes(OrderPager)
+
+## ORDER Details [/order/{id}]
+
++ Parameters
+    + id (required, number, `1`) - Order ID or current
+
+### Show [GET]
+
++ Response 200 (application/json)
+
+    + Attributes(Order)
+
+## ORDER ITEM [/order/{id}/item]
+
++ Parameters
+    + id (required, number, `1`) - Order ID or current
+
+### List [GET]
+
++ Response 404 (application/json)
++ Response 200 (application/json)
+
+    + Attributes(OrderItemPager)
+
+## ORDER ITEM Details [/order/{order_id}/item/{id}]
+
++ Parameters
+    + order_id (required, number, `1`) - Order ID or current
+    + id (required, number, `1`) - OrderItem ID
+
+### Show [GET]
+
++ Response 200 (application/json)
+
+    + Attributes(OrderItem)
+
+### Edit [PUT]
 
 + Request (application/json)
 
@@ -200,13 +409,58 @@ Polls is a simple API allowing consumers to view polls and vote in them.
             {
                 "quantity": 2 (number),
                 "title": "Air Max" (string)
-                "quantity": 2 (number)
             }
 
 + Response 404 (application/json)
 + Response 200 (application/json)
 
     + Attributes(OrderItem)
+
+### Delete [DELETE]
+
++ Response 404 (application/json)
++ Response 200 (application/json)
+
+## PRODUCT [/product{?q,page,per_page,order_by,direction,brand,size,price_from,price_to,color}]
+
++ Parameters
+    + q (optional, string, `air`) - Keyword
+    + page (optional, number, `1`) - Requested Page Number
+    + per_page (optional, number, `15`) - How many items per page
+    + order_by (optional, string, `title`) - Product sort key 
+    + direction (optional, string, `desc`) - Product order direction ascendant "asc" or descendant "desc"
+    + brand (optional, string, `nike`) - Search for brand ID or slug
+    + size (optional, string, `43`) - search for size
+    + price_from (optional, string, `10000`) - Search for price interval
+    + price_to (optional, string, `20000`) - Search for price interval
+    + color (optional, string, `green`) - Search for color
+
+### List / Search [GET]
+
++ Response 200 (application/json)
+
+    + Attributes(ProductPager)
+
+## PRODUCT Details [/product/{id}]
+
++ Parameters
+    + id (required, number, `1`) - Product ID
+
+### Show [GET]
+
++ Response 200 (application/json)
+
+    + Attributes(Product)
+## PRODUCT REVIEW [/product/{id}/review]
+
++ Parameters
+    + id (required, number, `1`) - Product ID
+
+### List [GET]
+
++ Response 200 (application/json)
+
+    + Attributes(ReviewPager)
     
 # Data Structures
 
@@ -228,6 +482,11 @@ Polls is a simple API allowing consumers to view polls and vote in them.
 + Include Pager
 + data: Order, Order (array[Order])
 
+## OrderItemPager (object)
+
++ Include Pager
++ data: OrderItem, OrderItem (array[OrderItem])
+
 ## AddressPager (object)
 
 + Include Pager
@@ -237,6 +496,11 @@ Polls is a simple API allowing consumers to view polls and vote in them.
 
 + Include Pager
 + data: Review, Review (array[Review])
+
+## ProductPager (object)
+
++ Include Pager
++ data: Product, Product (array[Product])
 
 ## User (object)
 
@@ -274,6 +538,20 @@ Polls is a simple API allowing consumers to view polls and vote in them.
 ## BillingAddress (object)
 
 + Include Address
+
+## ShippingMethod (object)
++ slug: `gls`
++ title: `GLS futárszolgálat`
++ description: `Gyors, pontos, megbízható`
++ price
+    + Include PriceDetail
+    
+## PaymentMethod (object)
++ slug: `card`
++ title: `Bankkártyás fizetés`
++ description: `Mastercard, Visa, Maestro`
++ price
+    + Include PriceDetail
 
 ## Price (object)
 
@@ -319,6 +597,32 @@ Polls is a simple API allowing consumers to view polls and vote in them.
 + tax
     + Include TaxPrice
 
+## ProductAttribute (object)
+
++ id: 111 (number)
++ slug: `color` (string)
++ title: `Szín` (string)
++ position: 1 (number)
++ value: `Fekete` (string) 
+
+## ProductAttributeSet (object)
+
++ id: 111 (number)
++ slug: `cipo` (string)
++ title: `Cipő` (string)
++ attributes: ProductAttribute, ProductAttribute (array[ProductAttribute])
+
+## Product (object)
+
++ id: 111 (number)
++ sku: `4234hgh` (string)
++ title: `Air Max` (string)
++ description: `Air Max description` (string)
++ attributeSet: ProductAttribute, ProductAttribute (array[ProductAttribute])
++ options: ProductOption (array[ProductOption])
++ price
+    + Include PriceDetail
+
 ## ProductOption (object)
 
 + id: 111 (number)
@@ -356,6 +660,10 @@ Polls is a simple API allowing consumers to view polls and vote in them.
 + total_quantity: 10 (number)
 + price
     + Include PriceDetail
++ shipping_method (optional)
+    + Include ShippingMethod
++ payment_method (optional)
+    + Include PaymentMethod
 + shipping_address (optional)
     + Include ShippingAddress
 + billing_address (optional)
