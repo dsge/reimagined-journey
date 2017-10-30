@@ -68,16 +68,29 @@ Ez az endpoint sikeres bejelentkezés esetén egy JWT tokent ( https://jwt.io ) 
 
 ### Connect [POST]
 
-Amennyiben nem letezik a facebook-os felhasznalo, letrehoz az API egy ujat.
+Amennyiben nem letezik a rendszerünkben a megfelelő user account, az API létrehozza.
+Amennyiben a felhasználónak még el kell fogadnia a terms and conditions-t (mert még nem regisztrált, vagy mert új terms van amit újra el kell fogadnia), akkor ez elsőre failelni fog 401-gyel, és csak a megfelelő paraméterek küldése mellett fogunk tudni tovább haladni.
 
 + Request (application/json)
         
-    + Body
+    + Attributes
+
+        + token: `facebook auth token` (required, string)
+        + `redirect_uri`: `http://example.com` (required, string)
+            
++ Response 401 (application/json)
+
+    + Attributes
+        
+        + `terms_accepted`: false - a felhasználó elfogadta-e a terms and conditions-t
+
++ Request (application/json)
+        
+    + Attributes
     
-            {
-                "token": "facebook auth token" (string),
-                "redirect_uri": "" (string)
-            }
+        + token: `facebook auth token` (required, string)
+        + `redirect_uri`: `http://example.com` (required, string)
+        + `terms_accepted`: true (required, boolean) - a felhasználó elfogadja-e a terms and conditions-t
             
 + Response 200 (application/json)
 
@@ -86,6 +99,8 @@ Amennyiben nem letezik a facebook-os felhasznalo, letrehoz az API egy ujat.
             {
                 "token": "auth token",
             }
+
+
             
 + Response 201 (application/json)
 
