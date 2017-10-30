@@ -1,7 +1,7 @@
-## USER ADDRESS [/user/{id}/address]
+## USER ADDRESS [/user/{user_id}/address]
 
 + Parameters
-    + id (required, number, `1`) - User ID or me
+    + user_id (required, number, `1`) - User ID or `me`
 
 ### List [GET]
 
@@ -13,66 +13,135 @@
 
 + Request (application/json)
 
-    + Body
-    
-            {
-                "title" : "Budapesti cimem" (string),
-                "country" : "Magyarország" (string),
-                "county" : "Pest megye" (string),
-                "city" : "Budapest" (string),
-                "street" : "Fő utca 12. 3. em 2. ajtó" (string),
-                "zip_code" : "2345" (string),
-                "customer_name" : "Kovács Dezső vagy Cégnév kft." (string),
-                "vat" : "HU12313133" (string),
-                "phone_number" : "+36 30 123 4567" (string),
-                "is_default_shipping" : false (boolean),
-                "is_default_billing" : false (boolean)
-            }
+    + Attributes
+        + title: `Budapesti címem` (required, string) - Felhasználó által szabadszavasan megadott elnevezés, csak azonosításra való (hogy a felhasználó könnyebben megismerje ezt a címet)
+        + country: `Magyarország` (required, string) - szabadszavas
+        + county: `Pest megye` (optional, string) - szabadszavas
+        + city: `Budapest` (required, string) - szabadszavas
+        + address: `Fő utca 12. 3. em 2. ajtó` (required, string) - szabadszavas utca/házszám/emelet/ajtó
+        + zip_code: `1234` (required, string) - szabadszavas 
+        + customer_name: `Kovács Dezső` (required, string) - szabadszavas személy vagy cégnév
+        + vat: `HU123123123` (optional, string) - szabadszavas adószám (ha cégről van szó)
+        + phone_number: `+36 30 123 4567` (required, string) - szabadszavas
+        + `is_default_shipping`: false (optional, boolean) - ezt a címet használja-e a felhasználó alapértelmezett szállítási címnek? default: false
+        + `is_default_billing`: false (optional, boolean) - ezt a címet használja-e a felhasználó alapértelmezett számlázási címnek? default: false
+        
 
 + Response 404 (application/json)
 + Response 201 (application/json)
 
     + Attributes(Address)
-    
-## USER ADDRESS Details [/user/{user_id}/address/{id}]
+
+### Show [GET /user/{user_id}/address/{id}]
 
 + Parameters
     + user_id (required, number, `1`) - User ID or me
     + id (required, number, `1`) - Address ID
 
-
-### Show [GET]
-
 + Response 404 (application/json)
 + Response 200 (application/json)
 
     + Attributes(Address)
 
-### Edit [PUT]
+### Edit [PUT /user/{user_id}/address/{id}]
+
+Egy meglevő cím módosítása.
+
++ Parameters
+    + user_id (required, number, `1`) - User ID or me
+    + id (required, number, `1`) - Address ID
 
 + Request (application/json)
+
+    + Attributes
+        + title (required, string)
+            
++ Response 401 (application/json)
 
     + Body
     
             {
-                "title" : "Budapesti cimem" (string),
-                "country" : "Magyarország" (string),
-                "county" : "Pest megye" (string),
-                "city" : "Budapest" (string),
-                "street" : "Fő utca 12. 3. em 2. ajtó" (string),
-                "zip_code" : "2345" (string),
-                "customer_name" : "Kovács Dezső vagy Cégnév kft." (string),
-                "vat" : "HU12313133" (string),
-                "phone_number" : "+36 30 123 4567" (string),
-                "is_default_shipping" : false (boolean),
-                "is_default_billing" : false (boolean)
+                
             }
+
++ Request (application/json)
+    + Headers
+    
+            Authorization: Bearer someotheruserstoken
+            
+    + Attributes
+        + title (required, string)
+            
++ Response 403 (application/json)
+
+    + Body
+    
+            {
+                
+            }
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer usertoken
+        
+    + Attributes
+        + title (required, string)
             
 + Response 404 (application/json)
-+ Response 200 (application/json)
+
+    + Body
+    
+            {
+                
+            }
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer usertoken
+        
+    + Attributes
+        + title (required, string)
+            
++ Response 422 (application/json)
+
+    + Body
+    
+            {
+                
+            }
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer usertoken
+        
+    
+    + Body
+    
+            {
+                "title" : "Budapesti cimem",
+                "country" : "Magyarország",
+                "county" : "Pest megye",
+                "city" : "Budapest",
+                "street" : "Fő utca 12. 3. em 2. ajtó",
+                "zip_code" : "2345",
+                "customer_name" : "Kovács Dezső vagy Cégnév kft.",
+                "vat" : "HU12313133",
+                "phone_number" : "+36 30 123 4567",
+                "is_default_shipping" : false,
+                "is_default_billing" : false
+            }
+            
++ Response 201 (application/json)
 
     + Attributes(Address)
 
-### Delete [DELETE]
+### Delete [DELETE /user/{user_id}/address/{id}]
+
++ Parameters
+    + user_id (required, number, `1`) - User ID or me
+    + id (required, number, `1`) - Address ID
 
 + Response 204

@@ -1,5 +1,5 @@
 FORMAT: 1A
-HOST: http://wo-man.apiblueprint.org
+HOST: http://private-3ab833-womanshop.apiary-mock.com
 
 # Wo-man
 
@@ -168,10 +168,10 @@ Amennyiben nem letezik a facebook-os felhasznalo, letrehoz az API egy ujat.
 + Response 200 (application/json)
 
     + Attributes(UserPager)
-## USER ADDRESS [/user/{id}/address]
+## USER ADDRESS [/user/{user_id}/address]
 
 + Parameters
-    + id (required, number, `1`) - User ID or me
+    + user_id (required, number, `1`) - User ID or `me`
 
 ### List [GET]
 
@@ -183,67 +183,136 @@ Amennyiben nem letezik a facebook-os felhasznalo, letrehoz az API egy ujat.
 
 + Request (application/json)
 
-    + Body
-    
-            {
-                "title" : "Budapesti cimem" (string),
-                "country" : "Magyarország" (string),
-                "county" : "Pest megye" (string),
-                "city" : "Budapest" (string),
-                "street" : "Fő utca 12. 3. em 2. ajtó" (string),
-                "zip_code" : "2345" (string),
-                "customer_name" : "Kovács Dezső vagy Cégnév kft." (string),
-                "vat" : "HU12313133" (string),
-                "phone_number" : "+36 30 123 4567" (string),
-                "is_default_shipping" : false (boolean),
-                "is_default_billing" : false (boolean)
-            }
+    + Attributes
+        + title: `Budapesti címem` (required, string) - Felhasználó által szabadszavasan megadott elnevezés, csak azonosításra való (hogy a felhasználó könnyebben megismerje ezt a címet)
+        + country: `Magyarország` (required, string) - szabadszavas
+        + county: `Pest megye` (optional, string) - szabadszavas
+        + city: `Budapest` (required, string) - szabadszavas
+        + address: `Fő utca 12. 3. em 2. ajtó` (required, string) - szabadszavas utca/házszám/emelet/ajtó
+        + zip_code: `1234` (required, string) - szabadszavas 
+        + customer_name: `Kovács Dezső` (required, string) - szabadszavas személy vagy cégnév
+        + vat: `HU123123123` (optional, string) - szabadszavas adószám (ha cégről van szó)
+        + phone_number: `+36 30 123 4567` (required, string) - szabadszavas
+        + `is_default_shipping`: false (optional, boolean) - ezt a címet használja-e a felhasználó alapértelmezett szállítási címnek? default: false
+        + `is_default_billing`: false (optional, boolean) - ezt a címet használja-e a felhasználó alapértelmezett számlázási címnek? default: false
+        
 
 + Response 404 (application/json)
 + Response 201 (application/json)
 
     + Attributes(Address)
-    
-## USER ADDRESS Details [/user/{user_id}/address/{id}]
+
+### Show [GET /user/{user_id}/address/{id}]
 
 + Parameters
     + user_id (required, number, `1`) - User ID or me
     + id (required, number, `1`) - Address ID
 
-
-### Show [GET]
-
 + Response 404 (application/json)
 + Response 200 (application/json)
 
     + Attributes(Address)
 
-### Edit [PUT]
+### Edit [PUT /user/{user_id}/address/{id}]
+
+Egy meglevő cím módosítása.
+
++ Parameters
+    + user_id (required, number, `1`) - User ID or me
+    + id (required, number, `1`) - Address ID
 
 + Request (application/json)
+
+    + Attributes
+        + title (required, string)
+            
++ Response 401 (application/json)
 
     + Body
     
             {
-                "title" : "Budapesti cimem" (string),
-                "country" : "Magyarország" (string),
-                "county" : "Pest megye" (string),
-                "city" : "Budapest" (string),
-                "street" : "Fő utca 12. 3. em 2. ajtó" (string),
-                "zip_code" : "2345" (string),
-                "customer_name" : "Kovács Dezső vagy Cégnév kft." (string),
-                "vat" : "HU12313133" (string),
-                "phone_number" : "+36 30 123 4567" (string),
-                "is_default_shipping" : false (boolean),
-                "is_default_billing" : false (boolean)
+                
             }
+
++ Request (application/json)
+    + Headers
+    
+            Authorization: Bearer someotheruserstoken
+            
+    + Attributes
+        + title (required, string)
+            
++ Response 403 (application/json)
+
+    + Body
+    
+            {
+                
+            }
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer usertoken
+        
+    + Attributes
+        + title (required, string)
             
 + Response 404 (application/json)
-+ Response 200 (application/json)
+
+    + Body
+    
+            {
+                
+            }
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer usertoken
+        
+    + Attributes
+        + title (required, string)
+            
++ Response 422 (application/json)
+
+    + Body
+    
+            {
+                
+            }
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer usertoken
+        
+    
+    + Body
+    
+            {
+                "title" : "Budapesti cimem",
+                "country" : "Magyarország",
+                "county" : "Pest megye",
+                "city" : "Budapest",
+                "street" : "Fő utca 12. 3. em 2. ajtó",
+                "zip_code" : "2345",
+                "customer_name" : "Kovács Dezső vagy Cégnév kft.",
+                "vat" : "HU12313133",
+                "phone_number" : "+36 30 123 4567",
+                "is_default_shipping" : false,
+                "is_default_billing" : false
+            }
+            
++ Response 201 (application/json)
 
     + Attributes(Address)
 
-### Delete [DELETE]
+### Delete [DELETE /user/{user_id}/address/{id}]
+
++ Parameters
+    + user_id (required, number, `1`) - User ID or me
+    + id (required, number, `1`) - Address ID
 
 + Response 204
 ## USER REVIEW [/user/{id}/review]
@@ -421,19 +490,14 @@ Amennyiben nem letezik a facebook-os felhasznalo, letrehoz az API egy ujat.
 + Response 404 (application/json)
 + Response 200 (application/json)
 
-## PRODUCT [/product{?q,page,per_page,order_by,direction,brand,size,price_from,price_to,color}]
+## PRODUCT [/product{?search,page,per_page,order_by,order_by_direction}]
 
 + Parameters
-    + q (optional, string, `air`) - Keyword
+    + search (optional, string, `air`) - Keyword
     + page (optional, number, `1`) - Requested Page Number
     + per_page (optional, number, `15`) - How many items per page
     + order_by (optional, string, `title`) - Product sort key 
-    + direction (optional, string, `desc`) - Product order direction ascendant "asc" or descendant "desc"
-    + brand (optional, string, `nike`) - Search for brand ID or slug
-    + size (optional, string, `43`) - search for size
-    + price_from (optional, string, `10000`) - Search for price interval
-    + price_to (optional, string, `20000`) - Search for price interval
-    + color (optional, string, `green`) - Search for color
+    + order_by_direction (optional, string, `desc`) - Product order direction ascendant "asc" or descendant "desc"
 
 ### List / Search [GET]
 
@@ -500,7 +564,7 @@ Amennyiben nem letezik a facebook-os felhasznalo, letrehoz az API egy ujat.
 ## ProductPager (object)
 
 + Include Pager
-+ data: Product, Product (array[Product])
++ data: ProductListItem, ProductListItem (array[ProductListItem])
 
 ## User (object)
 
@@ -622,6 +686,21 @@ Amennyiben nem letezik a facebook-os felhasznalo, letrehoz az API egy ujat.
 + options: ProductOption (array[ProductOption])
 + price
     + Include PriceDetail
++ `can_be_ordered`: true (boolean)
++ `cannot_be_ordered_because`
+    + `only_as_bundle`: true (boolean)
+    
+## ProductListItem (object)
+
++ id: 123 (number)
++ title: `Air Max kezdő csomag` (string)
++ description: `Air Max kezdő csomag description` (string)
++ price
+    + Include PriceDetail
++ products: Product, Product (array[Product])
++ `can_be_ordered`: false (boolean)
++ `cannot_be_ordered_because`
+    + `only_as_individual_product`: true (boolean)
 
 ## ProductOption (object)
 
@@ -629,6 +708,27 @@ Amennyiben nem letezik a facebook-os felhasznalo, letrehoz az API egy ujat.
 + slug: `size` (string)
 + title: `Size` (string)
 + value: `42` (string)
+
+## ProductOptionGroup (object)
++ slug: `size` (string)
++ title: `Méret` (string)
++ ui_type: `select_one` (string)
+
+## ImageThumbnails (object)
++ sizes
+    + small
+        + Include ImageThumbnailSize
+    + medium
+        + Include ImageThumbnailSize
+    + large
+        + Include ImageThumbnailSize
++ `is_placeholder`: false (boolean)
+
+## ImageThumbnailSize (object)
++ `thumbnail_uri`: `https://fakeimg.pl/300/` (string)
++ `thumbnail_size`
+    + `width`: `0` (number)
+    + `height`: `0` (number)
 
 ## OrderItemUnit (object)
 

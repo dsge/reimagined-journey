@@ -1,16 +1,11 @@
-## PRODUCT [/product{?q,page,per_page,order_by,direction,brand,size,price_from,price_to,color}]
+## PRODUCT [/product{?search,page,per_page,order_by,order_by_direction}]
 
 + Parameters
-    + q (optional, string, `air`) - Keyword
+    + search (optional, string, `air`) - Keyword
     + page (optional, number, `1`) - Requested Page Number
     + per_page (optional, number, `15`) - How many items per page
     + order_by (optional, string, `title`) - Product sort key 
-    + direction (optional, string, `desc`) - Product order direction ascendant "asc" or descendant "desc"
-    + brand (optional, string, `nike`) - Search for brand ID or slug
-    + size (optional, string, `43`) - search for size
-    + price_from (optional, string, `10000`) - Search for price interval
-    + price_to (optional, string, `20000`) - Search for price interval
-    + color (optional, string, `green`) - Search for color
+    + order_by_direction (optional, string, `desc`) - Product order direction ascendant "asc" or descendant "desc"
 
 ### List / Search [GET]
 

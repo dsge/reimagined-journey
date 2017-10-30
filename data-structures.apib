@@ -36,7 +36,7 @@
 ## ProductPager (object)
 
 + Include Pager
-+ data: Product, Product (array[Product])
++ data: ProductListItem, ProductListItem (array[ProductListItem])
 
 ## User (object)
 
@@ -158,6 +158,21 @@
 + options: ProductOption (array[ProductOption])
 + price
     + Include PriceDetail
++ `can_be_ordered`: true (boolean)
++ `cannot_be_ordered_because`
+    + `only_as_bundle`: true (boolean)
+    
+## ProductListItem (object)
+
++ id: 123 (number)
++ title: `Air Max kezdő csomag` (string)
++ description: `Air Max kezdő csomag description` (string)
++ price
+    + Include PriceDetail
++ products: Product, Product (array[Product])
++ `can_be_ordered`: false (boolean)
++ `cannot_be_ordered_because`
+    + `only_as_individual_product`: true (boolean)
 
 ## ProductOption (object)
 
@@ -165,6 +180,27 @@
 + slug: `size` (string)
 + title: `Size` (string)
 + value: `42` (string)
+
+## ProductOptionGroup (object)
++ slug: `size` (string)
++ title: `Méret` (string)
++ ui_type: `select_one` (string)
+
+## ImageThumbnails (object)
++ sizes
+    + small
+        + Include ImageThumbnailSize
+    + medium
+        + Include ImageThumbnailSize
+    + large
+        + Include ImageThumbnailSize
++ `is_placeholder`: false (boolean)
+
+## ImageThumbnailSize (object)
++ `thumbnail_uri`: `https://fakeimg.pl/300/` (string)
++ `thumbnail_size`
+    + `width`: `0` (number)
+    + `height`: `0` (number)
 
 ## OrderItemUnit (object)
 
