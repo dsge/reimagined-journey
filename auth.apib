@@ -63,14 +63,8 @@ Ez az endpoint sikeres bejelentkezés esetén egy JWT tokent ( https://jwt.io ) 
 
 ### Refresh token [POST /auth/token]
 
-Élő, még nem lejárt token lecserélése egy új tokenre.
+Élő, még nem lejárt token lecserélése egy új tokenre. - csak bejelentkezve!
 
-+ Request (application/json)
-
-    + Attributes
-    
-        + token: `valid token` (required, string) - valid, még nem lejárt token
-        
 + Response 200 (application/json)
 
     + Attributes
