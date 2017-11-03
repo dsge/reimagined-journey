@@ -61,6 +61,21 @@ Ez az endpoint sikeres bejelentkezés esetén egy JWT tokent ( https://jwt.io ) 
 
 + Response 200 (application/json)
 
+### Refresh token [POST /auth/token]
+
++ Request (application/json)
+
+    + Attributes
+    
+        + token: `valid token` (required, string)
+        
++ Response 200 (application/json)
+
+    + Attributes
+    
+        + token: `valid token` (string)
+    
+
 ## Social Authentication [/auth/{provider}]
 
 + Parameters
