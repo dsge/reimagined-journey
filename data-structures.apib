@@ -92,31 +92,10 @@
 
 ## Price (object)
 
-+ title: 10 (number)
-+ value: `10 Ft` (string)
++ value: 10 (number)
++ title: `10 Ft` (string)
 
-## DiscountPrice (object)
-
-+ net
-    + Include Price
-+ full
-    + Include Price
-
-## NormalPrice (object)
-
-+ net
-    + Include Price
-+ full
-    + Include Price
-
-## TotalPrice (object)
-
-+ net
-    + Include Price
-+ full
-    + Include Price
-
-## TaxPrice (object)
+## FullNetPrice (object)
 
 + net
     + Include Price
@@ -125,14 +104,10 @@
 
 ## PriceDetail
 
-+ discount
-    + Include DiscountPrice
-+ normal
-    + Include NormalPrice
-+ total
-    + Include TotalPrice
-+ tax
-    + Include TaxPrice
++ original
+    + Include FullNetPrice
++ current
+    + Include FullNetPrice
 
 ## ProductAttribute (object)
 
@@ -149,7 +124,26 @@
 + title: `Cipő` (string)
 + attributes: ProductAttribute, ProductAttribute (array[ProductAttribute])
 
-## Product (object)
+
+
+
+
+
+
+## ProductListing (object)
+
++ id: 123 (number)
++ title: `Air Max kezdő csomag` (string)
++ description: `Air Max kezdő csomag description` (string)
++ price
+    + Include PriceDetail
++ option_groups: ProductOptionGroup, ProductOptionGroup (array[ProductOptionGroup])
++ products: ProductListingItem, ProductListingItem (array[ProductListingItem])
++ `can_be_ordered`: false (boolean)
++ `cannot_be_ordered_because`
+    + `only_as_individual_product`: true (boolean)
+
+## ProductListingItem (object)
 
 + id: 111 (number)
 + sku: `4234hgh` (string)
@@ -163,17 +157,23 @@
 + `cannot_be_ordered_because`
     + `only_as_bundle`: true (boolean)
     
-## ProductListItem (object)
 
-+ id: 123 (number)
-+ title: `Air Max kezdő csomag` (string)
-+ description: `Air Max kezdő csomag description` (string)
-+ price
-    + Include PriceDetail
-+ products: Product, Product (array[Product])
-+ `can_be_ordered`: false (boolean)
-+ `cannot_be_ordered_because`
-    + `only_as_individual_product`: true (boolean)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## ProductOption (object)
 
