@@ -139,12 +139,14 @@
 + price
     + Include PriceDetail
 + option_groups: ProductOptionGroup, ProductOptionGroup (array[ProductOptionGroup])
-+ products: ProductListingItem, ProductListingItem (array[ProductListingItem])
++ items: ProductListingItem, ProductListingItem (array[ProductListingItem])
 + `can_be_ordered`: false (boolean)
 + `cannot_be_ordered_because`
     + `only_as_individual_items`: true (boolean)
 + recommended_product_listings (object)
-    + product_listings: 
++ images: ProductListingImage, ProductListingImage (array[ProductListingImage])
++ higlighted_image
+    + Include ProductListingImage
 
 ## ProductListingItem (object)
 
@@ -160,6 +162,16 @@
 + `cannot_be_ordered_because`
     + `only_as_bundle`: true (boolean)
     
+
+## ProductListingImage (object)
+
++ id: 111 (number)
++ sizes (object)
+    + `related_product`: `http://example.com/image.jpg`
+    + `list`: `http://example.com/image.jpg`
+    + `details`: `http://example.com/image.jpg`
+    + `details_related_product_small`: `http://example.com/image.jpg`
+    + `order_email`: `http://example.com/image.jpg`
 
 
 
@@ -179,8 +191,6 @@
 
 
 ## ProductOption (object)
-
-+ id: 111 (number)
 + slug: `size` (string)
 + title: `Size` (string)
 + value: `42` (string)
